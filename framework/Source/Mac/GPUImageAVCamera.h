@@ -4,7 +4,7 @@
 #import "GPUImageContext.h"
 #import "GPUImageOutput.h"
 
-//Delegate Protocal for Face Detection.
+// Delegate Protocal for Face Detection.
 @protocol GPUImageVideoCameraDelegate <NSObject>
 
 @optional
@@ -13,23 +13,22 @@
 
 
 /**
- A GPUImageOutput that provides frames from either camera
-*/
-@interface GPUImageAVCamera : GPUImageOutput <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
-{
+ * A GPUImageOutput that provides frames from either camera
+ */
+@interface GPUImageAVCamera : GPUImageOutput <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>{
     NSUInteger numberOfFramesCaptured;
     CGFloat totalFrameTimeDuringCapture;
-    
-    AVCaptureSession *_captureSession;
-    AVCaptureDevice *_inputCamera;
-    AVCaptureDevice *_microphone;
-    AVCaptureDeviceInput *videoInput;
-	AVCaptureVideoDataOutput *videoOutput;
+
+    AVCaptureSession * _captureSession;
+    AVCaptureDevice * _inputCamera;
+    AVCaptureDevice * _microphone;
+    AVCaptureDeviceInput * videoInput;
+    AVCaptureVideoDataOutput * videoOutput;
 
     BOOL capturePaused;
     GPUImageRotationMode outputRotation;
     dispatch_semaphore_t frameRenderingSemaphore;
-        
+
     BOOL captureAsYUV;
     GLuint luminanceTexture, chrominanceTexture;
 
@@ -37,14 +36,14 @@
 }
 
 /// The AVCaptureSession used to capture from the camera
-@property(readonly, retain, nonatomic) AVCaptureSession *captureSession;
+@property(readonly, retain, nonatomic) AVCaptureSession * captureSession;
 
 /// This enables the capture session preset to be changed on the fly
-@property (readwrite, nonatomic, copy) NSString *captureSessionPreset;
+@property (readwrite, nonatomic, copy) NSString * captureSessionPreset;
 
 /// This sets the frame rate of the camera (iOS 5 and above only)
 /**
- Setting this to 0 or below will set the frame rate back to the default setting for a particular preset.
+ * Setting this to 0 or below will set the frame rate back to the default setting for a particular preset.
  */
 @property (readwrite) NSInteger frameRate;
 
@@ -55,7 +54,7 @@
 @property(readwrite, nonatomic) BOOL runBenchmark;
 
 /// Use this property to manage camera settings. Focus point, exposure point, etc.
-@property(readonly) AVCaptureDevice *inputCamera;
+@property(readonly) AVCaptureDevice * inputCamera;
 
 /// These properties determine whether or not the two camera orientations should be mirrored. By default, both are NO.
 @property(readwrite, nonatomic) BOOL horizontallyMirrorFrontFacingCamera, horizontallyMirrorRearFacingCamera;
@@ -67,11 +66,11 @@
 + (NSArray *)connectedCameraDevices;
 
 /** Begin a capture session
- 
- See AVCaptureSession for acceptable values
- 
- @param sessionPreset Session preset to use
- @param cameraPosition Camera to capture from
+ *
+ * See AVCaptureSession for acceptable values
+ *
+ * @param sessionPreset Session preset to use
+ * @param cameraPosition Camera to capture from
  */
 - (id)initWithDeviceUniqueID:(NSString *)deviceUniqueID;
 - (id)initWithSessionPreset:(NSString *)sessionPreset deviceUniqueID:(NSString *)deviceUniqueID;
@@ -100,12 +99,12 @@
 - (void)resumeCameraCapture;
 
 /** Process a video sample
- @param sampleBuffer Buffer to process
+ * @param sampleBuffer Buffer to process
  */
 - (void)processVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer;
 
 /** Process an audio sample
- @param sampleBuffer Buffer to process
+ * @param sampleBuffer Buffer to process
  */
 - (void)processAudioSampleBuffer:(CMSampleBufferRef)sampleBuffer;
 

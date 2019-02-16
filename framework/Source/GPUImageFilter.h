@@ -1,15 +1,15 @@
 #import "GPUImageOutput.h"
 
-#define STRINGIZE(x) #x
-#define STRINGIZE2(x) STRINGIZE(x)
-#define SHADER_STRING(text) @ STRINGIZE2(text)
+#define STRINGIZE(x)                     #x
+#define STRINGIZE2(x)                    STRINGIZE(x)
+#define SHADER_STRING(text)              @ STRINGIZE2(text)
 
 #define GPUImageHashIdentifier #
-#define GPUImageWrappedLabel(x) x
-#define GPUImageEscapedHashIdentifier(a) GPUImageWrappedLabel(GPUImageHashIdentifier)a
+#define GPUImageWrappedLabel(x)          x
+#define GPUImageEscapedHashIdentifier(a) GPUImageWrappedLabel(GPUImageHashIdentifier) a
 
-extern NSString *const kGPUImageVertexShaderString;
-extern NSString *const kGPUImagePassthroughFragmentShaderString;
+extern NSString * const kGPUImageVertexShaderString;
+extern NSString * const kGPUImagePassthroughFragmentShaderString;
 
 struct GPUVector4 {
     GLfloat one;
@@ -42,26 +42,25 @@ struct GPUMatrix3x3 {
 typedef struct GPUMatrix3x3 GPUMatrix3x3;
 
 /** GPUImage's base filter class
- 
- Filters and other subsequent elements in the chain conform to the GPUImageInput protocol, which lets them take in the supplied or processed texture from the previous link in the chain and do something with it. Objects one step further down the chain are considered targets, and processing can be branched by adding multiple targets to a single output or filter.
+ *
+ * Filters and other subsequent elements in the chain conform to the GPUImageInput protocol, which lets them take in the supplied or processed texture from the previous link in the chain and do something with it. Objects one step further down the chain are considered targets, and processing can be branched by adding multiple targets to a single output or filter.
  */
-@interface GPUImageFilter : GPUImageOutput <GPUImageInput>
-{
-    GPUImageFramebuffer *firstInputFramebuffer;
-    
-    GLProgram *filterProgram;
+@interface GPUImageFilter : GPUImageOutput <GPUImageInput>{
+    GPUImageFramebuffer * firstInputFramebuffer;
+
+    GLProgram * filterProgram;
     GLint filterPositionAttribute, filterTextureCoordinateAttribute;
     GLint filterInputTextureUniform;
     GLfloat backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha;
-    
+
     BOOL isEndProcessing;
 
     CGSize currentFilterSize;
     GPUImageRotationMode inputRotation;
-    
+
     BOOL currentlyReceivingMonochromeInput;
-    
-    NSMutableDictionary *uniformStateRestorationBlocks;
+
+    NSMutableDictionary * uniformStateRestorationBlocks;
     dispatch_semaphore_t imageCaptureSemaphore;
 }
 
@@ -72,24 +71,24 @@ typedef struct GPUMatrix3x3 GPUMatrix3x3;
 /// @name Initialization and teardown
 
 /**
- Initialize with vertex and fragment shaders
- 
- You make take advantage of the SHADER_STRING macro to write your shaders in-line.
- @param vertexShaderString Source code of the vertex shader to use
- @param fragmentShaderString Source code of the fragment shader to use
+ * Initialize with vertex and fragment shaders
+ *
+ * You make take advantage of the SHADER_STRING macro to write your shaders in-line.
+ * @param vertexShaderString Source code of the vertex shader to use
+ * @param fragmentShaderString Source code of the fragment shader to use
  */
 - (id)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString;
 
 /**
- Initialize with a fragment shader
- 
- You may take advantage of the SHADER_STRING macro to write your shader in-line.
- @param fragmentShaderString Source code of fragment shader to use
+ * Initialize with a fragment shader
+ *
+ * You may take advantage of the SHADER_STRING macro to write your shader in-line.
+ * @param fragmentShaderString Source code of fragment shader to use
  */
 - (id)initWithFragmentShaderFromString:(NSString *)fragmentShaderString;
 /**
- Initialize with a fragment shader
- @param fragmentShaderFilename Filename of fragment shader to load
+ * Initialize with a fragment shader
+ * @param fragmentShaderFilename Filename of fragment shader to load
  */
 - (id)initWithFragmentShaderFromFile:(NSString *)fragmentShaderFilename;
 - (void)initializeAttributes;
@@ -116,7 +115,7 @@ typedef struct GPUMatrix3x3 GPUMatrix3x3;
 - (void)setPoint:(CGPoint)newPoint forUniformName:(NSString *)uniformName;
 - (void)setFloatVec3:(GPUVector3)newVec3 forUniformName:(NSString *)uniformName;
 - (void)setFloatVec4:(GPUVector4)newVec4 forUniform:(NSString *)uniformName;
-- (void)setFloatArray:(GLfloat *)array length:(GLsizei)count forUniform:(NSString*)uniformName;
+- (void)setFloatArray:(GLfloat *)array length:(GLsizei)count forUniform:(NSString *)uniformName;
 
 - (void)setMatrix3f:(GPUMatrix3x3)matrix forUniform:(GLint)uniform program:(GLProgram *)shaderProgram;
 - (void)setMatrix4f:(GPUMatrix4x4)matrix forUniform:(GLint)uniform program:(GLProgram *)shaderProgram;

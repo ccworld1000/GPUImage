@@ -20,18 +20,18 @@
 // M. Dubská, J. Havel, and A. Herout. PClines — Line detection using parallel coordinates. 2011 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), p. 1489- 1494.
 // http://medusa.fit.vutbr.cz/public/data/papers/2011-CVPR-Dubska-PClines.pdf
 
-//#define DEBUGLINEDETECTION
+// #define DEBUGLINEDETECTION
 
 @interface GPUImageHoughTransformLineDetector : GPUImageFilterGroup
 {
-    GPUImageOutput<GPUImageInput> *thresholdEdgeDetectionFilter;
-    
+    GPUImageOutput<GPUImageInput> * thresholdEdgeDetectionFilter;
+
 //    GPUImageThresholdEdgeDetectionFilter *thresholdEdgeDetectionFilter;
-    GPUImageParallelCoordinateLineTransformFilter *parallelCoordinateLineTransformFilter;
-    GPUImageThresholdedNonMaximumSuppressionFilter *nonMaximumSuppressionFilter;
-    
-    GLfloat *linesArray;
-    GLubyte *rawImagePixels;
+    GPUImageParallelCoordinateLineTransformFilter * parallelCoordinateLineTransformFilter;
+    GPUImageThresholdedNonMaximumSuppressionFilter * nonMaximumSuppressionFilter;
+
+    GLfloat * linesArray;
+    GLubyte * rawImagePixels;
 }
 
 // A threshold value for which a point is detected as belonging to an edge for determining lines. Default is 0.9.
@@ -41,9 +41,9 @@
 @property(readwrite, nonatomic) CGFloat lineDetectionThreshold;
 
 // This block is called on the detection of lines, usually on every processed frame. A C array containing normalized slopes and intercepts in m, b pairs (y=mx+b) is passed in, along with a count of the number of lines detected and the current timestamp of the video frame
-@property(nonatomic, copy) void(^linesDetectedBlock)(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime);
+@property(nonatomic, copy) void (^ linesDetectedBlock)(GLfloat * lineArray, NSUInteger linesDetected, CMTime frameTime);
 
 // These images are only enabled when built with DEBUGLINEDETECTION defined, and are used to examine the intermediate states of the Hough transform
-@property(nonatomic, readonly, strong) NSMutableArray *intermediateImages;
+@property(nonatomic, readonly, strong) NSMutableArray * intermediateImages;
 
 @end

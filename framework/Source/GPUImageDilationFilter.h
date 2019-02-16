@@ -3,10 +3,10 @@
 // For each pixel, this sets it to the maximum value of the red channel in a rectangular neighborhood extending out dilationRadius pixels from the center.
 // This extends out bright features, and is most commonly used with black-and-white thresholded images.
 
-extern NSString *const kGPUImageDilationRadiusOneVertexShaderString;
-extern NSString *const kGPUImageDilationRadiusTwoVertexShaderString;
-extern NSString *const kGPUImageDilationRadiusThreeVertexShaderString;
-extern NSString *const kGPUImageDilationRadiusFourVertexShaderString;
+extern NSString * const kGPUImageDilationRadiusOneVertexShaderString;
+extern NSString * const kGPUImageDilationRadiusTwoVertexShaderString;
+extern NSString * const kGPUImageDilationRadiusThreeVertexShaderString;
+extern NSString * const kGPUImageDilationRadiusFourVertexShaderString;
 
 @interface GPUImageDilationFilter : GPUImageTwoPassTextureSamplingFilter
 

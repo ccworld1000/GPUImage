@@ -14,9 +14,9 @@
 
 @interface GPUImageHistogramEqualizationFilter : GPUImageFilterGroup
 {
-    GPUImageHistogramFilter *histogramFilter;
-    GPUImageRawDataOutput *rawDataOutputFilter;
-    GPUImageRawDataInput *rawDataInputFilter;
+    GPUImageHistogramFilter * histogramFilter;
+    GPUImageRawDataOutput * rawDataOutputFilter;
+    GPUImageRawDataInput * rawDataInputFilter;
 }
 
 @property(readwrite, nonatomic) NSUInteger downsamplingFactor;

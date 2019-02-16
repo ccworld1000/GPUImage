@@ -6,7 +6,7 @@
 {
     CGSize pixelSizeOfImage;
     BOOL hasProcessedImage;
-    
+
     dispatch_semaphore_t imageUpdateSemaphore;
 }
 
@@ -33,6 +33,6 @@
  * @returns NO if resource is blocked and processing is discarded, YES otherwise
  */
 - (BOOL)processImageWithCompletionHandler:(void (^)(void))completion;
-- (void)processImageUpToFilter:(GPUImageOutput<GPUImageInput> *)finalFilterInChain withCompletionHandler:(void (^)(UIImage *processedImage))block;
+- (void)processImageUpToFilter:(GPUImageOutput<GPUImageInput> *) finalFilterInChain withCompletionHandler:(void (^)(UIImage * processedImage))block;
 
 @end

@@ -8,12 +8,12 @@
 
 #import "GPUImageTwoInputFilter.h"
 
-typedef NS_ENUM(NSUInteger, GPUImageSkinToneUpperColor) {
+typedef NS_ENUM (NSUInteger, GPUImageSkinToneUpperColor) {
     GPUImageSkinToneUpperColorGreen,
     GPUImageSkinToneUpperColorOrange
 };
 
-extern NSString *const kGPUImageSkinToneFragmentShaderString;
+extern NSString * const kGPUImageSkinToneFragmentShaderString;
 
 @interface GPUImageSkinToneFilter : GPUImageFilter
 {

@@ -3,7 +3,7 @@
 @class GPUImagePicture;
 
 /** A photo filter based on Photoshop action by Amatorka
-    http://amatorka.deviantart.com/art/Amatorka-Action-2-121069631
+ *  http://amatorka.deviantart.com/art/Amatorka-Action-2-121069631
  */
 
 // Note: If you want to use this effect you have to add lookup_amatorka.png
@@ -11,7 +11,7 @@
 
 @interface GPUImageAmatorkaFilter : GPUImageFilterGroup
 {
-    GPUImagePicture *lookupImageSource;
+    GPUImagePicture * lookupImageSource;
 }
 
 @end

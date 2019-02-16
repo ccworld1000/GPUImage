@@ -4,24 +4,24 @@
 
 #define GPUImageRotationSwapsWidthAndHeight(rotation) ((rotation) == kGPUImageRotateLeft || (rotation) == kGPUImageRotateRight || (rotation) == kGPUImageRotateRightFlipVertical || (rotation) == kGPUImageRotateRightFlipHorizontal)
 
-typedef NS_ENUM(NSUInteger, GPUImageRotationMode) {
-	kGPUImageNoRotation,
-	kGPUImageRotateLeft,
-	kGPUImageRotateRight,
-	kGPUImageFlipVertical,
-	kGPUImageFlipHorizonal,
-	kGPUImageRotateRightFlipVertical,
-	kGPUImageRotateRightFlipHorizontal,
-	kGPUImageRotate180
+typedef NS_ENUM (NSUInteger, GPUImageRotationMode) {
+    kGPUImageNoRotation,
+    kGPUImageRotateLeft,
+    kGPUImageRotateRight,
+    kGPUImageFlipVertical,
+    kGPUImageFlipHorizonal,
+    kGPUImageRotateRightFlipVertical,
+    kGPUImageRotateRightFlipHorizontal,
+    kGPUImageRotate180
 };
 
 @interface GPUImageContext : NSObject
 
 @property(readonly, nonatomic) dispatch_queue_t contextQueue;
-@property(readwrite, retain, nonatomic) GLProgram *currentShaderProgram;
-@property(readonly, retain, nonatomic) EAGLContext *context;
+@property(readwrite, retain, nonatomic) GLProgram * currentShaderProgram;
+@property(readonly, retain, nonatomic) EAGLContext * context;
 @property(readonly) CVOpenGLESTextureCacheRef coreVideoTextureCache;
-@property(readonly) GPUImageFramebufferCache *framebufferCache;
+@property(readonly) GPUImageFramebufferCache * framebufferCache;
 
 + (void *)contextKey;
 + (GPUImageContext *)sharedImageProcessingContext;

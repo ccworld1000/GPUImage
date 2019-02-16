@@ -8,8 +8,8 @@
 
 @interface GPUImageParallelCoordinateLineTransformFilter : GPUImageFilter
 {
-    GLubyte *rawImagePixels;
-    GLfloat *lineCoordinates;
+    GLubyte * rawImagePixels;
+    GLfloat * lineCoordinates;
     unsigned int maxLinePairsToRender, linePairsToRender;
 }
 

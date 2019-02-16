@@ -1,10 +1,10 @@
 #import "GPUImageTwoPassTextureSamplingFilter.h"
 
 /** A Gaussian blur filter
-    Interpolated optimization based on Daniel Rákos' work at http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
+ *  Interpolated optimization based on Daniel Rákos' work at http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
  */
 
-@interface GPUImageGaussianBlurFilter : GPUImageTwoPassTextureSamplingFilter 
+@interface GPUImageGaussianBlurFilter : GPUImageTwoPassTextureSamplingFilter
 {
     BOOL shouldResizeBlurRadiusWithImageSize;
     CGFloat _blurRadiusInPixels;

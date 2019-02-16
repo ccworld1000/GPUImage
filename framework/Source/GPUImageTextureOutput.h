@@ -3,9 +3,8 @@
 
 @protocol GPUImageTextureOutputDelegate;
 
-@interface GPUImageTextureOutput : NSObject <GPUImageInput>
-{
-    GPUImageFramebuffer *firstInputFramebuffer;
+@interface GPUImageTextureOutput : NSObject <GPUImageInput>{
+    GPUImageFramebuffer * firstInputFramebuffer;
 }
 
 @property(readwrite, unsafe_unretained, nonatomic) id<GPUImageTextureOutputDelegate> delegate;

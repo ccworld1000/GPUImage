@@ -12,10 +12,10 @@ typedef enum { kGPUImageNoRotation, kGPUImageRotateLeft, kGPUImageRotateRight, k
 @interface GPUImageContext : NSObject
 
 @property(readonly, nonatomic) dispatch_queue_t contextQueue;
-@property(readwrite, retain, nonatomic) GLProgram *currentShaderProgram;
-@property(readonly, retain, nonatomic) NSOpenGLContext *context;
+@property(readwrite, retain, nonatomic) GLProgram * currentShaderProgram;
+@property(readonly, retain, nonatomic) NSOpenGLContext * context;
 @property(readonly) CVOpenGLTextureCacheRef coreVideoTextureCache;
-@property(readonly) GPUImageFramebufferCache *framebufferCache;
+@property(readonly) GPUImageFramebufferCache * framebufferCache;
 
 + (void *)contextKey;
 + (GPUImageContext *)sharedImageProcessingContext;

@@ -4,8 +4,8 @@
 
 @interface GPUImageUnsharpMaskFilter : GPUImageFilterGroup
 {
-    GPUImageGaussianBlurFilter *blurFilter;
-    GPUImageFilter *unsharpMaskFilter;
+    GPUImageGaussianBlurFilter * blurFilter;
+    GPUImageFilter * unsharpMaskFilter;
 }
 // The blur radius of the underlying Gaussian blur. The default is 4.0.
 @property (readwrite, nonatomic) CGFloat blurRadiusInPixels;

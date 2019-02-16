@@ -15,11 +15,10 @@
 @synthesize videoComposition = _videoComposition;
 @synthesize audioMix = _audioMix;
 
-- (id)initWithComposition:(AVComposition*)compositon
-      andVideoComposition:(AVVideoComposition*)videoComposition
-              andAudioMix:(AVAudioMix*)audioMix {
-    if (!(self = [super init]))
-    {
+- (id) initWithComposition:(AVComposition *)compositon
+    andVideoComposition:(AVVideoComposition *)videoComposition
+    andAudioMix:(AVAudioMix *)audioMix {
+    if (!(self = [super init])) {
         return nil;
     }
 
@@ -32,32 +31,31 @@
     return self;
 }
 
-- (AVAssetReader*)createAssetReader
- {
-    //NSLog(@"creating reader from composition: %@, video: %@, audio: %@ with duration: %@", _compositon, _videoComposition, _audioMix, CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, _compositon.duration)));
+- (AVAssetReader *) createAssetReader {
+    // NSLog(@"creating reader from composition: %@, video: %@, audio: %@ with duration: %@", _compositon, _videoComposition, _audioMix, CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, _compositon.duration)));
 
-    NSError *error = nil;
-    AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:self.compositon error:&error];
+    NSError * error = nil;
+    AVAssetReader * assetReader = [AVAssetReader assetReaderWithAsset:self.compositon error:&error];
 
-    NSDictionary *outputSettings = @{(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)};
-    AVAssetReaderVideoCompositionOutput *readerVideoOutput = [AVAssetReaderVideoCompositionOutput assetReaderVideoCompositionOutputWithVideoTracks:[_compositon tracksWithMediaType:AVMediaTypeVideo]
-                                                                                                                                     videoSettings:outputSettings];
-#if ! TARGET_IPHONE_SIMULATOR
-    if( [_videoComposition isKindOfClass:[AVMutableVideoComposition class]] )
-        [(AVMutableVideoComposition*)_videoComposition setRenderScale:1.0];
+    NSDictionary * outputSettings = @{ (id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) };
+    AVAssetReaderVideoCompositionOutput * readerVideoOutput = [AVAssetReaderVideoCompositionOutput assetReaderVideoCompositionOutputWithVideoTracks:[_compositon tracksWithMediaType:AVMediaTypeVideo]
+                                                                                                                                      videoSettings:outputSettings];
+
+#if !TARGET_IPHONE_SIMULATOR
+    if ( [_videoComposition isKindOfClass:[AVMutableVideoComposition class]] )
+        [(AVMutableVideoComposition *)_videoComposition setRenderScale:1.0];
 #endif
     readerVideoOutput.videoComposition = self.videoComposition;
     readerVideoOutput.alwaysCopiesSampleData = NO;
     [assetReader addOutput:readerVideoOutput];
 
-    NSArray *audioTracks = [_compositon tracksWithMediaType:AVMediaTypeAudio];
+    NSArray * audioTracks = [_compositon tracksWithMediaType:AVMediaTypeAudio];
     BOOL shouldRecordAudioTrack = (([audioTracks count] > 0) && (self.audioEncodingTarget != nil) );
-    AVAssetReaderAudioMixOutput *readerAudioOutput = nil;
+    AVAssetReaderAudioMixOutput * readerAudioOutput = nil;
 
-    if (shouldRecordAudioTrack)
-    {
+    if (shouldRecordAudioTrack) {
         [self.audioEncodingTarget setShouldInvalidateAudioSampleWhenDone:YES];
-        
+
         readerAudioOutput = [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks:audioTracks audioSettings:nil];
         readerAudioOutput.audioMix = self.audioMix;
         readerAudioOutput.alwaysCopiesSampleData = NO;
@@ -65,6 +63,6 @@
     }
 
     return assetReader;
-}
+} /* createAssetReader */
 
 @end

@@ -6,11 +6,10 @@
 
 extern dispatch_queue_attr_t GPUImageDefaultQueueAttribute(void);
 
-@interface GPUImageContext()
-{
-    NSMutableDictionary *shaderProgramCache;
-    NSMutableArray *shaderProgramUsageHistory;
-    EAGLSharegroup *_sharegroup;
+@interface GPUImageContext () {
+    NSMutableDictionary * shaderProgramCache;
+    NSMutableArray * shaderProgramUsageHistory;
+    EAGLSharegroup * _sharegroup;
 }
 
 @end
@@ -23,93 +22,83 @@ extern dispatch_queue_attr_t GPUImageDefaultQueueAttribute(void);
 @synthesize coreVideoTextureCache = _coreVideoTextureCache;
 @synthesize framebufferCache = _framebufferCache;
 
-static void *openGLESContextQueueKey;
+static void * openGLESContextQueueKey;
 
-- (id)init;
-{
-    if (!(self = [super init]))
-    {
-		return nil;
+- (id) init; {
+    if (!(self = [super init])) {
+        return nil;
     }
 
-	openGLESContextQueueKey = &openGLESContextQueueKey;
+    openGLESContextQueueKey = &openGLESContextQueueKey;
     _contextQueue = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.openGLESContextQueue", GPUImageDefaultQueueAttribute());
-    
+
 #if OS_OBJECT_USE_OBJC
-	dispatch_queue_set_specific(_contextQueue, openGLESContextQueueKey, (__bridge void *)self, NULL);
+    dispatch_queue_set_specific(_contextQueue, openGLESContextQueueKey, (__bridge void *)self, NULL);
 #endif
     shaderProgramCache = [[NSMutableDictionary alloc] init];
     shaderProgramUsageHistory = [[NSMutableArray alloc] init];
-    
+
     return self;
 }
 
-+ (void *)contextKey {
-	return openGLESContextQueueKey;
++ (void *) contextKey {
+    return openGLESContextQueueKey;
 }
 
 // Based on Colin Wheeler's example here: http://cocoasamurai.blogspot.com/2011/04/singletons-your-doing-them-wrong.html
-+ (GPUImageContext *)sharedImageProcessingContext;
-{
++ (GPUImageContext *) sharedImageProcessingContext; {
     static dispatch_once_t pred;
-    static GPUImageContext *sharedImageProcessingContext = nil;
-    
+    static GPUImageContext * sharedImageProcessingContext = nil;
+
     dispatch_once(&pred, ^{
         sharedImageProcessingContext = [[[self class] alloc] init];
     });
     return sharedImageProcessingContext;
 }
 
-+ (dispatch_queue_t)sharedContextQueue;
-{
++ (dispatch_queue_t) sharedContextQueue; {
     return [[self sharedImageProcessingContext] contextQueue];
 }
 
-+ (GPUImageFramebufferCache *)sharedFramebufferCache;
-{
++ (GPUImageFramebufferCache *) sharedFramebufferCache; {
     return [[self sharedImageProcessingContext] framebufferCache];
 }
 
-+ (void)useImageProcessingContext;
-{
++ (void) useImageProcessingContext; {
     [[GPUImageContext sharedImageProcessingContext] useAsCurrentContext];
 }
 
-- (void)useAsCurrentContext;
-{
-    EAGLContext *imageProcessingContext = [self context];
-    if ([EAGLContext currentContext] != imageProcessingContext)
-    {
+- (void) useAsCurrentContext; {
+    EAGLContext * imageProcessingContext = [self context];
+
+    if ([EAGLContext currentContext] != imageProcessingContext) {
         [EAGLContext setCurrentContext:imageProcessingContext];
     }
 }
 
-+ (void)setActiveShaderProgram:(GLProgram *)shaderProgram;
-{
-    GPUImageContext *sharedContext = [GPUImageContext sharedImageProcessingContext];
++ (void) setActiveShaderProgram:(GLProgram *)shaderProgram; {
+    GPUImageContext * sharedContext = [GPUImageContext sharedImageProcessingContext];
+
     [sharedContext setContextShaderProgram:shaderProgram];
 }
 
-- (void)setContextShaderProgram:(GLProgram *)shaderProgram;
-{
-    EAGLContext *imageProcessingContext = [self context];
-    if ([EAGLContext currentContext] != imageProcessingContext)
-    {
+- (void) setContextShaderProgram:(GLProgram *)shaderProgram; {
+    EAGLContext * imageProcessingContext = [self context];
+
+    if ([EAGLContext currentContext] != imageProcessingContext) {
         [EAGLContext setCurrentContext:imageProcessingContext];
     }
-    
-    if (self.currentShaderProgram != shaderProgram)
-    {
+
+    if (self.currentShaderProgram != shaderProgram) {
         self.currentShaderProgram = shaderProgram;
         [shaderProgram use];
     }
 }
 
-+ (GLint)maximumTextureSizeForThisDevice;
-{
++ (GLint) maximumTextureSizeForThisDevice; {
     static dispatch_once_t pred;
     static GLint maxTextureSize = 0;
-    
+
     dispatch_once(&pred, ^{
         [self useImageProcessingContext];
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
@@ -118,8 +107,7 @@ static void *openGLESContextQueueKey;
     return maxTextureSize;
 }
 
-+ (GLint)maximumTextureUnitsForThisDevice;
-{
++ (GLint) maximumTextureUnitsForThisDevice; {
     static dispatch_once_t pred;
     static GLint maxTextureUnits = 0;
 
@@ -127,12 +115,11 @@ static void *openGLESContextQueueKey;
         [self useImageProcessingContext];
         glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
     });
-    
+
     return maxTextureUnits;
 }
 
-+ (GLint)maximumVaryingVectorsForThisDevice;
-{
++ (GLint) maximumVaryingVectorsForThisDevice; {
     static dispatch_once_t pred;
     static GLint maxVaryingVectors = 0;
 
@@ -144,15 +131,14 @@ static void *openGLESContextQueueKey;
     return maxVaryingVectors;
 }
 
-+ (BOOL)deviceSupportsOpenGLESExtension:(NSString *)extension;
-{
++ (BOOL) deviceSupportsOpenGLESExtension:(NSString *)extension; {
     static dispatch_once_t pred;
-    static NSArray *extensionNames = nil;
+    static NSArray * extensionNames = nil;
 
     // Cache extensions for later quick reference, since this won't change for a given device
     dispatch_once(&pred, ^{
         [GPUImageContext useImageProcessingContext];
-        NSString *extensionsString = [NSString stringWithCString:(const char *)glGetString(GL_EXTENSIONS) encoding:NSASCIIStringEncoding];
+        NSString * extensionsString = [NSString stringWithCString:(const char *)glGetString(GL_EXTENSIONS) encoding:NSASCIIStringEncoding];
         extensionNames = [extensionsString componentsSeparatedByString:@" "];
     });
 
@@ -162,46 +148,40 @@ static void *openGLESContextQueueKey;
 
 // http://www.khronos.org/registry/gles/extensions/EXT/EXT_texture_rg.txt
 
-+ (BOOL)deviceSupportsRedTextures;
-{
++ (BOOL) deviceSupportsRedTextures; {
     static dispatch_once_t pred;
     static BOOL supportsRedTextures = NO;
-    
+
     dispatch_once(&pred, ^{
         supportsRedTextures = [GPUImageContext deviceSupportsOpenGLESExtension:@"GL_EXT_texture_rg"];
     });
-    
+
     return supportsRedTextures;
 }
 
-+ (BOOL)deviceSupportsFramebufferReads;
-{
++ (BOOL) deviceSupportsFramebufferReads; {
     static dispatch_once_t pred;
     static BOOL supportsFramebufferReads = NO;
-    
+
     dispatch_once(&pred, ^{
         supportsFramebufferReads = [GPUImageContext deviceSupportsOpenGLESExtension:@"GL_EXT_shader_framebuffer_fetch"];
     });
-    
+
     return supportsFramebufferReads;
 }
 
-+ (CGSize)sizeThatFitsWithinATextureForSize:(CGSize)inputSize;
-{
-    GLint maxTextureSize = [self maximumTextureSizeForThisDevice]; 
-    if ( (inputSize.width < maxTextureSize) && (inputSize.height < maxTextureSize) )
-    {
++ (CGSize) sizeThatFitsWithinATextureForSize:(CGSize)inputSize; {
+    GLint maxTextureSize = [self maximumTextureSizeForThisDevice];
+
+    if ( (inputSize.width < maxTextureSize) && (inputSize.height < maxTextureSize) ) {
         return inputSize;
     }
-    
+
     CGSize adjustedSize;
-    if (inputSize.width > inputSize.height)
-    {
+    if (inputSize.width > inputSize.height) {
         adjustedSize.width = (CGFloat)maxTextureSize;
         adjustedSize.height = ((CGFloat)maxTextureSize / inputSize.width) * inputSize.height;
-    }
-    else
-    {
+    } else {
         adjustedSize.height = (CGFloat)maxTextureSize;
         adjustedSize.width = ((CGFloat)maxTextureSize / inputSize.height) * inputSize.width;
     }
@@ -209,18 +189,15 @@ static void *openGLESContextQueueKey;
     return adjustedSize;
 }
 
-- (void)presentBufferForDisplay;
-{
+- (void) presentBufferForDisplay; {
     [self.context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
-- (GLProgram *)programForVertexShaderString:(NSString *)vertexShaderString fragmentShaderString:(NSString *)fragmentShaderString;
-{
-    NSString *lookupKeyForShaderProgram = [NSString stringWithFormat:@"V: %@ - F: %@", vertexShaderString, fragmentShaderString];
-    GLProgram *programFromCache = [shaderProgramCache objectForKey:lookupKeyForShaderProgram];
+- (GLProgram *) programForVertexShaderString:(NSString *)vertexShaderString fragmentShaderString:(NSString *)fragmentShaderString; {
+    NSString * lookupKeyForShaderProgram = [NSString stringWithFormat:@"V: %@ - F: %@", vertexShaderString, fragmentShaderString];
+    GLProgram * programFromCache = [shaderProgramCache objectForKey:lookupKeyForShaderProgram];
 
-    if (programFromCache == nil)
-    {
+    if (programFromCache == nil) {
         programFromCache = [[GLProgram alloc] initWithVertexShaderString:vertexShaderString fragmentShaderString:fragmentShaderString];
         [shaderProgramCache setObject:programFromCache forKey:lookupKeyForShaderProgram];
 //        [shaderProgramUsageHistory addObject:lookupKeyForShaderProgram];
@@ -234,20 +211,19 @@ static void *openGLESContextQueueKey;
 //            }
 //        }
     }
-    
+
     return programFromCache;
 }
 
-- (void)useSharegroup:(EAGLSharegroup *)sharegroup;
-{
+- (void) useSharegroup:(EAGLSharegroup *)sharegroup; {
     NSAssert(_context == nil, @"Unable to use a share group when the context has already been created. Call this method before you use the context for the first time.");
-    
+
     _sharegroup = sharegroup;
 }
 
-- (EAGLContext *)createContext;
-{
-    EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:_sharegroup];
+- (EAGLContext *) createContext; {
+    EAGLContext * context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:_sharegroup];
+
     NSAssert(context != nil, @"Unable to create an OpenGL ES 2.0 context. The GPUImage framework requires OpenGL ES 2.0 support to work.");
     return context;
 }
@@ -256,12 +232,11 @@ static void *openGLESContextQueueKey;
 #pragma mark -
 #pragma mark Manage fast texture upload
 
-+ (BOOL)supportsFastTextureUpload;
-{
++ (BOOL) supportsFastTextureUpload; {
 #if TARGET_IPHONE_SIMULATOR
     return NO;
 #else
-    
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wtautological-pointer-compare"
     return (CVOpenGLESTextureCacheCreate != NULL);
@@ -273,47 +248,40 @@ static void *openGLESContextQueueKey;
 #pragma mark -
 #pragma mark Accessors
 
-- (EAGLContext *)context;
-{
-    if (_context == nil)
-    {
+- (EAGLContext *) context; {
+    if (_context == nil) {
         _context = [self createContext];
         [EAGLContext setCurrentContext:_context];
-        
+
         // Set up a few global settings for the image processing pipeline
         glDisable(GL_DEPTH_TEST);
     }
-    
+
     return _context;
 }
 
-- (CVOpenGLESTextureCacheRef)coreVideoTextureCache;
-{
-    if (_coreVideoTextureCache == NULL)
-    {
+- (CVOpenGLESTextureCacheRef) coreVideoTextureCache; {
+    if (_coreVideoTextureCache == NULL) {
 #if defined(__IPHONE_6_0)
         CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [self context], NULL, &_coreVideoTextureCache);
 #else
         CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)[self context], NULL, &_coreVideoTextureCache);
 #endif
-        
-        if (err)
-        {
+
+        if (err) {
             NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreate %d", err);
         }
 
     }
-    
+
     return _coreVideoTextureCache;
 }
 
-- (GPUImageFramebufferCache *)framebufferCache;
-{
-    if (_framebufferCache == nil)
-    {
+- (GPUImageFramebufferCache *) framebufferCache; {
+    if (_framebufferCache == nil) {
         _framebufferCache = [[GPUImageFramebufferCache alloc] init];
     }
-    
+
     return _framebufferCache;
 }
 

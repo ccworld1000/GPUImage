@@ -12,31 +12,29 @@
 #pragma mark -
 #pragma mark Initialization and teardown
 
-- (id)init;
-{
-    if (!(self = [super init]))
-    {
-		return nil;
+- (id) init; {
+    if (!(self = [super init])) {
+        return nil;
     }
-    
+
     // First pass: downsample and desaturate
     saturationFilter = [[GPUImageSaturationFilter alloc] init];
     [self addFilter:saturationFilter];
-    
+
     // Second pass: apply a strong Gaussian blur
     blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
     [self addFilter:blurFilter];
-    
+
     // Third pass: upsample and adjust luminance range
     luminanceRangeFilter = [[GPUImageLuminanceRangeFilter alloc] init];
     [self addFilter:luminanceRangeFilter];
-        
+
     [saturationFilter addTarget:blurFilter];
     [blurFilter addTarget:luminanceRangeFilter];
-    
+
     self.initialFilters = [NSArray arrayWithObject:saturationFilter];
     self.terminalFilter = luminanceRangeFilter;
-    
+
     self.blurRadiusInPixels = 12.0;
     self.saturation = 0.8;
     self.downsampling = 4.0;
@@ -45,16 +43,14 @@
     return self;
 }
 
-- (void)setInputSize:(CGSize)newSize atIndex:(NSInteger)textureIndex;
-{
-    if (_downsampling > 1.0)
-    {
+- (void) setInputSize:(CGSize)newSize atIndex:(NSInteger)textureIndex; {
+    if (_downsampling > 1.0) {
         CGSize rotatedSize = [saturationFilter rotatedSize:newSize forIndex:textureIndex];
 
         [saturationFilter forceProcessingAtSize:CGSizeMake(rotatedSize.width / _downsampling, rotatedSize.height / _downsampling)];
         [luminanceRangeFilter forceProcessingAtSize:rotatedSize];
     }
-    
+
     [super setInputSize:newSize atIndex:textureIndex];
 }
 
@@ -76,38 +72,31 @@
 // ... if d is odd, use three box-blurs of size 'd', centered on the output pixel.
 
 
-- (void)setBlurRadiusInPixels:(CGFloat)newValue;
-{
+- (void) setBlurRadiusInPixels:(CGFloat)newValue; {
     blurFilter.blurRadiusInPixels = newValue;
 }
 
-- (CGFloat)blurRadiusInPixels;
-{
+- (CGFloat) blurRadiusInPixels; {
     return blurFilter.blurRadiusInPixels;
 }
 
-- (void)setSaturation:(CGFloat)newValue;
-{
+- (void) setSaturation:(CGFloat)newValue; {
     saturationFilter.saturation = newValue;
 }
 
-- (CGFloat)saturation;
-{
+- (CGFloat) saturation; {
     return saturationFilter.saturation;
 }
 
-- (void)setDownsampling:(CGFloat)newValue;
-{
+- (void) setDownsampling:(CGFloat)newValue; {
     _downsampling = newValue;
 }
 
-- (void)setRangeReductionFactor:(CGFloat)rangeReductionFactor
-{
+- (void) setRangeReductionFactor:(CGFloat)rangeReductionFactor {
     luminanceRangeFilter.rangeReductionFactor = rangeReductionFactor;
 }
 
-- (CGFloat)rangeReductionFactor
-{
+- (CGFloat) rangeReductionFactor {
     return luminanceRangeFilter.rangeReductionFactor;
 }
 

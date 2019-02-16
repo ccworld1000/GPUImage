@@ -5,13 +5,13 @@
 #import "GPUImageOutput.h"
 #import "GPUImageColorConversion.h"
 
-//Optionally override the YUV to RGB matrices
-void setColorConversion601( GLfloat conversionMatrix[9] );
-void setColorConversion601FullRange( GLfloat conversionMatrix[9] );
-void setColorConversion709( GLfloat conversionMatrix[9] );
+// Optionally override the YUV to RGB matrices
+void setColorConversion601(GLfloat conversionMatrix[9]);
+void setColorConversion601FullRange(GLfloat conversionMatrix[9]);
+void setColorConversion709(GLfloat conversionMatrix[9]);
 
 
-//Delegate Protocal for Face Detection.
+// Delegate Protocal for Face Detection.
 @protocol GPUImageVideoCameraDelegate <NSObject>
 
 @optional
@@ -20,23 +20,22 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
 
 
 /**
- A GPUImageOutput that provides frames from either camera
-*/
-@interface GPUImageVideoCamera : GPUImageOutput <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
-{
+ * A GPUImageOutput that provides frames from either camera
+ */
+@interface GPUImageVideoCamera : GPUImageOutput <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>{
     NSUInteger numberOfFramesCaptured;
     CGFloat totalFrameTimeDuringCapture;
-    
-    AVCaptureSession *_captureSession;
-    AVCaptureDevice *_inputCamera;
-    AVCaptureDevice *_microphone;
-    AVCaptureDeviceInput *videoInput;
-	AVCaptureVideoDataOutput *videoOutput;
+
+    AVCaptureSession * _captureSession;
+    AVCaptureDevice * _inputCamera;
+    AVCaptureDevice * _microphone;
+    AVCaptureDeviceInput * videoInput;
+    AVCaptureVideoDataOutput * videoOutput;
 
     BOOL capturePaused;
     GPUImageRotationMode outputRotation, internalRotation;
     dispatch_semaphore_t frameRenderingSemaphore;
-        
+
     BOOL captureAsYUV;
     GLuint luminanceTexture, chrominanceTexture;
 
@@ -47,14 +46,14 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
 @property(readonly, nonatomic) BOOL isRunning;
 
 /// The AVCaptureSession used to capture from the camera
-@property(readonly, retain, nonatomic) AVCaptureSession *captureSession;
+@property(readonly, retain, nonatomic) AVCaptureSession * captureSession;
 
 /// This enables the capture session preset to be changed on the fly
-@property (readwrite, nonatomic, copy) NSString *captureSessionPreset;
+@property (readwrite, nonatomic, copy) NSString * captureSessionPreset;
 
 /// This sets the frame rate of the camera (iOS 5 and above only)
 /**
- Setting this to 0 or below will set the frame rate back to the default setting for a particular preset.
+ * Setting this to 0 or below will set the frame rate back to the default setting for a particular preset.
  */
 @property (readwrite) int32_t frameRate;
 
@@ -66,7 +65,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
 @property(readwrite, nonatomic) BOOL runBenchmark;
 
 /// Use this property to manage camera settings. Focus point, exposure point, etc.
-@property(readonly) AVCaptureDevice *inputCamera;
+@property(readonly) AVCaptureDevice * inputCamera;
 
 /// This determines the rotation applied to the output image, based on the source material
 @property(readwrite, nonatomic) UIInterfaceOrientation outputImageOrientation;
@@ -79,22 +78,22 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
 /// @name Initialization and teardown
 
 /** Begin a capture session
- 
- See AVCaptureSession for acceptable values
- 
- @param sessionPreset Session preset to use
- @param cameraPosition Camera to capture from
+ *
+ * See AVCaptureSession for acceptable values
+ *
+ * @param sessionPreset Session preset to use
+ * @param cameraPosition Camera to capture from
  */
 - (id)initWithSessionPreset:(NSString *)sessionPreset cameraPosition:(AVCaptureDevicePosition)cameraPosition;
 
 /** Add audio capture to the session. Adding inputs and outputs freezes the capture session momentarily, so you
-    can use this method to add the audio inputs and outputs early, if you're going to set the audioEncodingTarget 
-    later. Returns YES is the audio inputs and outputs were added, or NO if they had already been added.
+ *  can use this method to add the audio inputs and outputs early, if you're going to set the audioEncodingTarget
+ *  later. Returns YES is the audio inputs and outputs were added, or NO if they had already been added.
  */
 - (BOOL)addAudioInputsAndOutputs;
 
 /** Remove the audio capture inputs and outputs from this session. Returns YES if the audio inputs and outputs
-    were removed, or NO is they hadn't already been added.
+ *  were removed, or NO is they hadn't already been added.
  */
 - (BOOL)removeAudioInputsAndOutputs;
 
@@ -121,12 +120,12 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
 - (void)resumeCameraCapture;
 
 /** Process a video sample
- @param sampleBuffer Buffer to process
+ * @param sampleBuffer Buffer to process
  */
 - (void)processVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer;
 
 /** Process an audio sample
- @param sampleBuffer Buffer to process
+ * @param sampleBuffer Buffer to process
  */
 - (void)processAudioSampleBuffer:(CMSampleBufferRef)sampleBuffer;
 

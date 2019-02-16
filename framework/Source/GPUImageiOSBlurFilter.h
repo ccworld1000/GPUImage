@@ -6,9 +6,9 @@
 
 @interface GPUImageiOSBlurFilter : GPUImageFilterGroup
 {
-    GPUImageSaturationFilter *saturationFilter;
-    GPUImageGaussianBlurFilter *blurFilter;
-    GPUImageLuminanceRangeFilter *luminanceRangeFilter;
+    GPUImageSaturationFilter * saturationFilter;
+    GPUImageGaussianBlurFilter * blurFilter;
+    GPUImageLuminanceRangeFilter * luminanceRangeFilter;
 }
 
 /** A radius in pixels to use for the blur, with a default of 12.0. This adjusts the sigma variable in the Gaussian distribution function.

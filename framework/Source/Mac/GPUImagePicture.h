@@ -5,7 +5,7 @@
 {
     CGSize pixelSizeOfImage;
     BOOL hasProcessedImage;
-    
+
     dispatch_semaphore_t imageUpdateSemaphore;
 }
 
@@ -19,7 +19,7 @@
 // Image rendering
 - (void)processImage;
 - (BOOL)processImageWithCompletionHandler:(void (^)(void))completion;
-- (void)processImageUpToFilter:(GPUImageOutput<GPUImageInput> *)finalFilterInChain withCompletionHandler:(void (^)(NSImage *processedImage))block;
+- (void)processImageUpToFilter:(GPUImageOutput<GPUImageInput> *) finalFilterInChain withCompletionHandler:(void (^)(NSImage * processedImage))block;
 - (CGSize)outputImageSize;
 
 @end

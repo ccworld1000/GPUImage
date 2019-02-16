@@ -3,7 +3,7 @@
 @interface GPUImageLineGenerator : GPUImageFilter
 {
     GLint lineWidthUniform, lineColorUniform;
-    GLfloat *lineCoordinates;
+    GLfloat * lineCoordinates;
 }
 
 // The width of the displayed lines, in pixels. The default is 1.

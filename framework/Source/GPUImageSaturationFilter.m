@@ -1,48 +1,46 @@
 #import "GPUImageSaturationFilter.h"
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-NSString *const kGPUImageSaturationFragmentShaderString = SHADER_STRING
-(
- varying highp vec2 textureCoordinate;
- 
- uniform sampler2D inputImageTexture;
- uniform lowp float saturation;
- 
- // Values from "Graphics Shaders: Theory and Practice" by Bailey and Cunningham
- const mediump vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);
- 
- void main()
- {
+NSString * const kGPUImageSaturationFragmentShaderString = SHADER_STRING
+    (
+        varying highp vec2 textureCoordinate;
+
+        uniform sampler2D inputImageTexture;
+        uniform lowp float saturation;
+
+        // Values from "Graphics Shaders: Theory and Practice" by Bailey and Cunningham
+        const mediump vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);
+
+        void main(){
     lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
     lowp float luminance = dot(textureColor.rgb, luminanceWeighting);
     lowp vec3 greyScaleColor = vec3(luminance);
-    
-	gl_FragColor = vec4(mix(greyScaleColor, textureColor.rgb, saturation), textureColor.w);
-	 
- }
-);
+
+    gl_FragColor = vec4(mix(greyScaleColor, textureColor.rgb, saturation), textureColor.w);
+
+}
+    );
 #else
-NSString *const kGPUImageSaturationFragmentShaderString = SHADER_STRING
-(
- varying vec2 textureCoordinate;
- 
- uniform sampler2D inputImageTexture;
- uniform float saturation;
- 
- // Values from "Graphics Shaders: Theory and Practice" by Bailey and Cunningham
- const vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);
- 
- void main()
- {
-     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-     float luminance = dot(textureColor.rgb, luminanceWeighting);
-     vec3 greyScaleColor = vec3(luminance);
-     
-     gl_FragColor = vec4(mix(greyScaleColor, textureColor.rgb, saturation), textureColor.w);
-	 
- }
- );
-#endif
+NSString * const kGPUImageSaturationFragmentShaderString = SHADER_STRING
+    (
+        varying vec2 textureCoordinate;
+
+        uniform sampler2D inputImageTexture;
+        uniform float saturation;
+
+        // Values from "Graphics Shaders: Theory and Practice" by Bailey and Cunningham
+        const vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);
+
+        void main(){
+    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+    float luminance = dot(textureColor.rgb, luminanceWeighting);
+    vec3 greyScaleColor = vec3(luminance);
+
+    gl_FragColor = vec4(mix(greyScaleColor, textureColor.rgb, saturation), textureColor.w);
+
+}
+    );
+#endif /* if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE */
 
 @implementation GPUImageSaturationFilter
 
@@ -51,13 +49,11 @@ NSString *const kGPUImageSaturationFragmentShaderString = SHADER_STRING
 #pragma mark -
 #pragma mark Initialization and teardown
 
-- (id)init;
-{
-    if (!(self = [super initWithFragmentShaderFromString:kGPUImageSaturationFragmentShaderString]))
-    {
-		return nil;
+- (id) init; {
+    if (!(self = [super initWithFragmentShaderFromString:kGPUImageSaturationFragmentShaderString])) {
+        return nil;
     }
-    
+
     saturationUniform = [filterProgram uniformIndex:@"saturation"];
     self.saturation = 1.0;
 
@@ -67,10 +63,9 @@ NSString *const kGPUImageSaturationFragmentShaderString = SHADER_STRING
 #pragma mark -
 #pragma mark Accessors
 
-- (void)setSaturation:(CGFloat)newValue;
-{
+- (void) setSaturation:(CGFloat)newValue; {
     _saturation = newValue;
-    
+
     [self setFloat:_saturation forUniform:saturationUniform program:filterProgram];
 }
 

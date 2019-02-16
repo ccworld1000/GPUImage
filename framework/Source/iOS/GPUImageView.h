@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "GPUImageContext.h"
 
-typedef NS_ENUM(NSUInteger, GPUImageFillModeType) {
+typedef NS_ENUM (NSUInteger, GPUImageFillModeType) {
     kGPUImageFillModeStretch,                       // Stretch to fill the full view, which may distort the image outside of its normal aspect ratio
     kGPUImageFillModePreserveAspectRatio,           // Maintains the aspect ratio of the source image, adding bars of the specified background color
     kGPUImageFillModePreserveAspectRatioAndFill     // Maintains the aspect ratio of the source image, zooming in on its center to fill the view
@@ -10,10 +10,9 @@ typedef NS_ENUM(NSUInteger, GPUImageFillModeType) {
 
 
 /**
- UIView subclass to use as an endpoint for displaying GPUImage outputs
+ * UIView subclass to use as an endpoint for displaying GPUImage outputs
  */
-@interface GPUImageView : UIView <GPUImageInput>
-{
+@interface GPUImageView : UIView <GPUImageInput>{
     GPUImageRotationMode inputRotation;
 }
 
@@ -28,11 +27,11 @@ typedef NS_ENUM(NSUInteger, GPUImageFillModeType) {
 @property(nonatomic) BOOL enabled;
 
 /** Handling fill mode
- 
- @param redComponent Red component for background color
- @param greenComponent Green component for background color
- @param blueComponent Blue component for background color
- @param alphaComponent Alpha component for background color
+ *
+ * @param redComponent Red component for background color
+ * @param greenComponent Green component for background color
+ * @param blueComponent Blue component for background color
+ * @param alphaComponent Alpha component for background color
  */
 - (void)setBackgroundColorRed:(GLfloat)redComponent green:(GLfloat)greenComponent blue:(GLfloat)blueComponent alpha:(GLfloat)alphaComponent;
 

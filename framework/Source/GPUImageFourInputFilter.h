@@ -1,17 +1,17 @@
 #import "GPUImageThreeInputFilter.h"
 
-extern NSString *const kGPUImageFourInputTextureVertexShaderString;
+extern NSString * const kGPUImageFourInputTextureVertexShaderString;
 
 @interface GPUImageFourInputFilter : GPUImageThreeInputFilter
 {
-    GPUImageFramebuffer *fourthInputFramebuffer;
+    GPUImageFramebuffer * fourthInputFramebuffer;
 
     GLint filterFourthTextureCoordinateAttribute;
     GLint filterInputTextureUniform4;
     GPUImageRotationMode inputRotation4;
     GLuint filterSourceTexture4;
     CMTime fourthFrameTime;
-    
+
     BOOL hasSetThirdTexture, hasReceivedFourthFrame, fourthFrameWasVideo;
     BOOL fourthFrameCheckDisabled;
 }

@@ -2,41 +2,40 @@
 #import <AVFoundation/AVFoundation.h>
 #import "GPUImageContext.h"
 
-extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
+extern NSString * const kGPUImageColorSwizzlingFragmentShaderString;
 
 @protocol GPUImageMovieWriterDelegate <NSObject>
 
 @optional
 - (void)movieRecordingCompleted;
-- (void)movieRecordingFailedWithError:(NSError*)error;
+- (void)movieRecordingFailedWithError:(NSError *)error;
 
 @end
 
-@interface GPUImageMovieWriter : NSObject <GPUImageInput>
-{
+@interface GPUImageMovieWriter : NSObject <GPUImageInput>{
     CMVideoDimensions videoDimensions;
-	CMVideoCodecType videoType;
+    CMVideoCodecType videoType;
 
-    NSURL *movieURL;
-    NSString *fileType;
-	AVAssetWriter *assetWriter;
-	AVAssetWriterInput *assetWriterAudioInput;
-	AVAssetWriterInput *assetWriterVideoInput;
-    AVAssetWriterInputPixelBufferAdaptor *assetWriterPixelBufferInput;
-	dispatch_queue_t movieWritingQueue;
-    
+    NSURL * movieURL;
+    NSString * fileType;
+    AVAssetWriter * assetWriter;
+    AVAssetWriterInput * assetWriterAudioInput;
+    AVAssetWriterInput * assetWriterVideoInput;
+    AVAssetWriterInputPixelBufferAdaptor * assetWriterPixelBufferInput;
+    dispatch_queue_t movieWritingQueue;
+
     CGSize videoSize;
     GPUImageRotationMode inputRotation;
 }
 
 @property(readwrite, nonatomic) BOOL hasAudioTrack;
 @property(readwrite, nonatomic) BOOL shouldPassthroughAudio;
-@property(nonatomic, copy) void(^completionBlock)(void);
-@property(nonatomic, copy) void(^failureBlock)(NSError*);
+@property(nonatomic, copy) void (^ completionBlock)(void);
+@property(nonatomic, copy) void (^ failureBlock)(NSError *);
 @property(nonatomic, assign) id<GPUImageMovieWriterDelegate> delegate;
 @property(readwrite, nonatomic) BOOL encodingLiveVideo;
-@property(nonatomic, copy) void(^videoInputReadyCallback)(void);
-@property(nonatomic, copy) void(^audioInputReadyCallback)(void);
+@property(nonatomic, copy) void (^ videoInputReadyCallback)(void);
+@property(nonatomic, copy) void (^ audioInputReadyCallback)(void);
 @property(nonatomic) BOOL enabled;
 
 // Initialization and teardown

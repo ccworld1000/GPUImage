@@ -4,8 +4,8 @@
 @interface GPUImagePoissonBlendFilter : GPUImageTwoInputCrossTextureSamplingFilter
 {
     GLint mixUniform;
-    
-    GPUImageFramebuffer *secondOutputFramebuffer;
+
+    GPUImageFramebuffer * secondOutputFramebuffer;
 }
 
 // Mix ranges from 0.0 (only image 1) to 1.0 (only image 2 gradients), with 1.0 as the normal level

@@ -14,9 +14,9 @@
  */
 @interface GPUImageMovie : GPUImageOutput
 
-@property (readwrite, retain) AVAsset *asset;
-@property (readwrite, retain) AVPlayerItem *playerItem;
-@property(readwrite, retain) NSURL *url;
+@property (readwrite, retain)AVAsset * asset;
+@property (readwrite, retain) AVPlayerItem * playerItem;
+@property(readwrite, retain) NSURL * url;
 
 /** This enables the benchmarking mode, which logs out instantaneous and average frame times to the console
  */
@@ -31,7 +31,7 @@
 @property(readwrite, nonatomic) BOOL shouldRepeat;
 
 /** This specifies the progress of the process on a scale from 0 to 1.0. A value of 0 means the process has not yet begun, A value of 1.0 means the conversaion is complete.
-    This property is not key-value observable.
+ *  This property is not key-value observable.
  */
 @property(readonly, nonatomic) float progress;
 
@@ -39,7 +39,7 @@
  */
 @property (readwrite, nonatomic, assign) id <GPUImageMovieDelegate>delegate;
 
-@property (readonly, nonatomic) AVAssetReader *assetReader;
+@property (readonly, nonatomic) AVAssetReader * assetReader;
 @property (readonly, nonatomic) BOOL audioEncodingIsFinished;
 @property (readonly, nonatomic) BOOL videoEncodingIsFinished;
 
@@ -56,6 +56,6 @@
 - (void)startProcessing;
 - (void)endProcessing;
 - (void)cancelProcessing;
-- (void)processMovieFrame:(CMSampleBufferRef)movieSampleBuffer; 
+- (void)processMovieFrame:(CMSampleBufferRef)movieSampleBuffer;
 
 @end

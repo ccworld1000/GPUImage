@@ -3,63 +3,59 @@
 @implementation GPUImageGrayscaleFilter
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-NSString *const kGPUImageLuminanceFragmentShaderString = SHADER_STRING
-(
- precision highp float;
- 
- varying vec2 textureCoordinate;
- 
- uniform sampler2D inputImageTexture;
- 
- const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);
- 
- void main()
- {
-     lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-     float luminance = dot(textureColor.rgb, W);
-     
-     gl_FragColor = vec4(vec3(luminance), textureColor.a);
- }
-);
+NSString * const kGPUImageLuminanceFragmentShaderString = SHADER_STRING
+    (
+        precision highp float;
+
+        varying vec2 textureCoordinate;
+
+        uniform sampler2D inputImageTexture;
+
+        const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);
+
+        void main(){
+    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+    float luminance = dot(textureColor.rgb, W);
+
+    gl_FragColor = vec4(vec3(luminance), textureColor.a);
+}
+    );
 #else
-NSString *const kGPUImageLuminanceFragmentShaderString = SHADER_STRING
-(
- varying vec2 textureCoordinate;
- 
- uniform sampler2D inputImageTexture;
- 
- const vec3 W = vec3(0.2125, 0.7154, 0.0721);
- 
- void main()
- {
-     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-     float luminance = dot(textureColor.rgb, W);
-     
-     gl_FragColor = vec4(vec3(luminance), textureColor.a);
- }
-);
-#endif
+NSString * const kGPUImageLuminanceFragmentShaderString = SHADER_STRING
+    (
+        varying vec2 textureCoordinate;
+
+        uniform sampler2D inputImageTexture;
+
+        const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+
+        void main(){
+    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+    float luminance = dot(textureColor.rgb, W);
+
+    gl_FragColor = vec4(vec3(luminance), textureColor.a);
+}
+    );
+#endif /* if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE */
 
 
-- (void)renderToTextureWithVertices:(const GLfloat *)vertices textureCoordinates:(const GLfloat *)textureCoordinates;
-{
-    if (!currentlyReceivingMonochromeInput)
-    {
+- (void) renderToTextureWithVertices:(const GLfloat *)vertices textureCoordinates:(const GLfloat *)textureCoordinates; {
+    if (!currentlyReceivingMonochromeInput) {
         [super renderToTextureWithVertices:vertices textureCoordinates:textureCoordinates];
     }
 }
 
-//- (void)setInputTexture:(GLuint)newInputTexture atIndex:(NSInteger)textureIndex;
-//{
+// - (void)setInputTexture:(GLuint)newInputTexture atIndex:(NSInteger)textureIndex;
+// {
 //    [super setInputTexture:newInputTexture atIndex:textureIndex];
 //    if (currentlyReceivingMonochromeInput)
 //    {
 //        [self notifyTargetsAboutNewOutputTexture];
 //    }
-//}
+// }
 
-//- (GLuint)textureForOutput;
-//{
+// - (GLuint)textureForOutput;
+// {
 //    if (currentlyReceivingMonochromeInput)
 //    {
 //        return filterSourceTexture;
@@ -68,35 +64,33 @@ NSString *const kGPUImageLuminanceFragmentShaderString = SHADER_STRING
 //    {
 //        return outputTexture;
 //    }
-//}
+// }
 
-- (BOOL)wantsMonochromeInput;
-{
+- (BOOL) wantsMonochromeInput; {
 //    return YES;
     return NO;
 }
 
-- (BOOL)providesMonochromeOutput;
-{
+- (BOOL) providesMonochromeOutput; {
 //    return YES;
     return NO;
 }
 
 // TODO: Rewrite this based on the new GPUImageFilter implementation
-//- (void)informTargetsAboutNewFrameAtTime:(CMTime)frameTime;
-//{
+// - (void)informTargetsAboutNewFrameAtTime:(CMTime)frameTime;
+// {
 //    if (self.frameProcessingCompletionBlock != NULL)
 //    {
 //        self.frameProcessingCompletionBlock(self, frameTime);
 //    }
-//    
+//
 //    for (id<GPUImageInput> currentTarget in targets)
 //    {
 //        if (currentTarget != self.targetToIgnoreForUpdates)
 //        {
 //            NSInteger indexOfObject = [targets indexOfObject:currentTarget];
 //            NSInteger textureIndex = [[targetTextureIndices objectAtIndex:indexOfObject] integerValue];
-//            
+//
 //            if ([GPUImageContext supportsFastTextureUpload] && preparedToCaptureImage)
 //            {
 //                [self setInputTextureForTarget:currentTarget atIndex:textureIndex];
@@ -105,7 +99,7 @@ NSString *const kGPUImageLuminanceFragmentShaderString = SHADER_STRING
 //            if (currentlyReceivingMonochromeInput)
 //            {
 //                [currentTarget setInputRotation:inputRotation atIndex:textureIndex];
-//                
+//
 //                CGSize sizeToRotate = [self outputFrameSize];
 //                CGSize rotatedSize = sizeToRotate;
 //                if (GPUImageRotationSwapsWidthAndHeight(inputRotation))
@@ -122,18 +116,16 @@ NSString *const kGPUImageLuminanceFragmentShaderString = SHADER_STRING
 //            [currentTarget newFrameReadyAtTime:frameTime atIndex:textureIndex];
 //        }
 //    }
-//}
+// }
 
 #pragma mark -
 #pragma mark Initialization and teardown
 
-- (id)init;
-{
-    if (!(self = [super initWithFragmentShaderFromString:kGPUImageLuminanceFragmentShaderString]))
-    {
-		return nil;
+- (id) init; {
+    if (!(self = [super initWithFragmentShaderFromString:kGPUImageLuminanceFragmentShaderString])) {
+        return nil;
     }
-    
+
     return self;
 }
 
